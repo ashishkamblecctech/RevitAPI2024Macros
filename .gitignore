@@ -1,0 +1,41 @@
+# Ignore Visual Studio temporary files, build results, and
+# User-specific files
+# *.gitignore
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.userprefs
+
+# Mono auto generated files
+mono_crash.*
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# OS-specific files
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# macOS
+*.DS_Store
+
+# Windows
+[Tt]humbs.db
+[Dd]esktop.ini
+
+# Rider
+.idea/
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
