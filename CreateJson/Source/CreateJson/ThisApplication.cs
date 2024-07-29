@@ -88,7 +88,6 @@ namespace CreateJson
 		public double AirChangesPerHour { get; set; }
 		public List<string> OutdoorAirMethods {get; set;}
 		
-		
 		// Constructor (if needed)
 		public SpaceTypeParameter()
 		{
@@ -137,19 +136,14 @@ namespace CreateJson
 		{
 			Document _doc = this.ActiveUIDocument.Document;
 			
-
 			IList<Element> buildingTypeCollector = new FilteredElementCollector(_doc).OfCategory(BuiltInCategory.OST_HVAC_Load_Building_Types).ToList();
 			MainClass mainClass = new MainClass();			
 			FilteredElementCollector scheduleCollector = new FilteredElementCollector(_doc);
 			List<Element> hvacSheduleList = scheduleCollector.OfCategory(BuiltInCategory.OST_HVAC_Load_Schedules).ToList();
-//			List<Element> hvacSheduleList = scheduleCollector.OfCategory(BuiltInCategory.).ToList();
 			List<string> scheduleNameList = hvacSheduleList.Select(element => element.Name).ToList();
 			List<string> scheduleList = new List<string>();
 			
-			FilteredElementCollector airMethodsCollector = new FilteredElementCollector(_doc);
-			
 			List<string> outdoorAirMethods = new List<string>();
-			
 			outdoorAirMethods.Add(OutdoorAirFlowStandard.ByACH.ToString());
 			outdoorAirMethods.Add(OutdoorAirFlowStandard.ByPeopleAndByArea.ToString());
 			outdoorAirMethods.Add(OutdoorAirFlowStandard.MaxByACH_ByArea_ByPeople.ToString());
@@ -164,17 +158,10 @@ namespace CreateJson
 			{
 				string plenumLightingContribution = ele.get_Parameter(BuiltInParameter.ROOM_PLENUM_LIGHTING_PARAM).Definition.Name;
 				string infiltrationAirFlowPerArea = ele.get_Parameter(BuiltInParameter.SPACE_INFILTRATION_PARAM).Definition.Name;
-				Parameter para = ele.get_Parameter(BuiltInParameter.ROOM_OUTDOOR_AIRFLOW_STANDARD_PARAM);
-				
-				Element e = para.Element;
-				
-				
-//				BuiltInParameterGroup builtInParameterGroup = para.Definition.ParameterGroup;
-				
+								
 				BuildingTypeParameter data = new BuildingTypeParameter();
 				HVACLoadBuildingType loadBuildingType = ele as HVACLoadBuildingType;
-
-				//Commented parameters below are not avaialable in the Revit API
+				
 				data.AreaPerPerson = loadBuildingType.AreaPerPerson;
 				data.SensibleHeatGainPerPerson = loadBuildingType.SensibleHeatGainPerPerson;
 				data.LatentHeatGainPerPerson = loadBuildingType.LatentHeatGainPerPerson;
@@ -188,7 +175,6 @@ namespace CreateJson
 				data.OutdoorAirPerPerson = loadBuildingType.OutdoorAirPerPerson;
 				data.OutdoorAirPerArea = loadBuildingType.OutdoorAirPerArea;
 				data.AirChangesPerHour = loadBuildingType.AirChangesPerHour;
-				//Outdoor Air Method
 				data.OutdoorAirMethods = outdoorAirMethods;
 				data.OpeningTime = loadBuildingType.OpeningTime;
 				data.ClosingTime = loadBuildingType.ClosingTime;
@@ -206,12 +192,10 @@ namespace CreateJson
 			{
 				string plenumLightingContribution = ele.get_Parameter(BuiltInParameter.ROOM_PLENUM_LIGHTING_PARAM).Definition.Name;
 				string infiltrationAirFlowPerArea = ele.get_Parameter(BuiltInParameter.SPACE_INFILTRATION_PARAM).Definition.Name;
-//				string infiltrationAirFlowPerArea = ele.get_Parameter(BuiltInParameter.).Definition.Name;
 				
 				SpaceTypeParameter revitLoadSpaceType = new SpaceTypeParameter();
 				HVACLoadSpaceType loadSpaceType = ele as HVACLoadSpaceType;
 
-				//Commented parameters below are not avaialable in the Revit API
 				revitLoadSpaceType.AreaPerPerson = loadSpaceType.AreaPerPerson;
 				revitLoadSpaceType.SensibleHeatGainPerPerson = loadSpaceType.SensibleHeatGainPerPerson;
 				revitLoadSpaceType.LatentHeatGainPerPerson = loadSpaceType.LatentHeatGainPerPerson;
@@ -225,13 +209,11 @@ namespace CreateJson
 				revitLoadSpaceType.OutdoorAirPerPerson = loadSpaceType.OutdoorAirPerPerson;
 				revitLoadSpaceType.OutdoorAirPerArea = loadSpaceType.OutdoorAirPerArea;
 				revitLoadSpaceType.AirChangesPerHour = loadSpaceType.AirChangesPerHour;
-				//Outdoor Air Method
 				revitLoadSpaceType.OutdoorAirMethods = outdoorAirMethods;
 				revitLoadSpaceType.HeatingSetPoint = loadSpaceType.HeatingSetPoint;
 				revitLoadSpaceType.CoolingSetPoint = loadSpaceType.CoolingSetPoint;
 				revitLoadSpaceType.HumidificationSetPoint = loadSpaceType.HumidificationSetPoint;
 				revitLoadSpaceType.DehumidificationSetPoint = loadSpaceType.DehumidificationSetPoint;
-				
 				
 				mainClass.spaceTypeData.Add(ele.Name, revitLoadSpaceType);
 			}
