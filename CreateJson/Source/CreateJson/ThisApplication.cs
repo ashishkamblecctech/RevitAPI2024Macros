@@ -56,6 +56,7 @@ namespace CreateJson
 		public List<string> OccupancyScheduleList {get; set;}
 		public List<string> LightingScheduleList {get; set;}
 		public List<string> PowerScheduleList {get; set;}
+		public List<string> OutdoorAirMethods {get; set;}
 
 		// Constructor (if needed)
 		public BuildingTypeParameter()
@@ -85,6 +86,7 @@ namespace CreateJson
 		public string infiltrationAirflowPerArea {get; set;}
 		public string plenumLightingContribution{get; set;}
 		public double AirChangesPerHour { get; set; }
+		public List<string> OutdoorAirMethods {get; set;}
 		
 		
 		// Constructor (if needed)
@@ -144,6 +146,16 @@ namespace CreateJson
 			List<string> scheduleNameList = hvacSheduleList.Select(element => element.Name).ToList();
 			List<string> scheduleList = new List<string>();
 			
+			FilteredElementCollector airMethodsCollector = new FilteredElementCollector(_doc);
+			
+			List<string> outdoorAirMethods = new List<string>();
+			
+			outdoorAirMethods.Add(OutdoorAirFlowStandard.ByACH.ToString());
+			outdoorAirMethods.Add(OutdoorAirFlowStandard.ByPeopleAndByArea.ToString());
+			outdoorAirMethods.Add(OutdoorAirFlowStandard.MaxByACH_ByArea_ByPeople.ToString());
+			outdoorAirMethods.Add(OutdoorAirFlowStandard.MaxByACH_ByPeopleByArea.ToString());
+			outdoorAirMethods.Add(OutdoorAirFlowStandard.MaxByPeople_ByArea.ToString());
+			
 			foreach (var element in hvacSheduleList) {
 				scheduleList.Add(element.ToString());				
 			}
@@ -153,6 +165,7 @@ namespace CreateJson
 				string plenumLightingContribution = ele.get_Parameter(BuiltInParameter.ROOM_PLENUM_LIGHTING_PARAM).Definition.Name;
 				string infiltrationAirFlowPerArea = ele.get_Parameter(BuiltInParameter.SPACE_INFILTRATION_PARAM).Definition.Name;
 				Parameter para = ele.get_Parameter(BuiltInParameter.ROOM_OUTDOOR_AIRFLOW_STANDARD_PARAM);
+				
 				Element e = para.Element;
 				
 				
@@ -176,6 +189,7 @@ namespace CreateJson
 				data.OutdoorAirPerArea = loadBuildingType.OutdoorAirPerArea;
 				data.AirChangesPerHour = loadBuildingType.AirChangesPerHour;
 				//Outdoor Air Method
+				data.OutdoorAirMethods = outdoorAirMethods;
 				data.OpeningTime = loadBuildingType.OpeningTime;
 				data.ClosingTime = loadBuildingType.ClosingTime;
 				data.UnoccupiedCoolingSetPoint = loadBuildingType.UnoccupiedCoolingSetPoint;
@@ -212,6 +226,7 @@ namespace CreateJson
 				revitLoadSpaceType.OutdoorAirPerArea = loadSpaceType.OutdoorAirPerArea;
 				revitLoadSpaceType.AirChangesPerHour = loadSpaceType.AirChangesPerHour;
 				//Outdoor Air Method
+				revitLoadSpaceType.OutdoorAirMethods = outdoorAirMethods;
 				revitLoadSpaceType.HeatingSetPoint = loadSpaceType.HeatingSetPoint;
 				revitLoadSpaceType.CoolingSetPoint = loadSpaceType.CoolingSetPoint;
 				revitLoadSpaceType.HumidificationSetPoint = loadSpaceType.HumidificationSetPoint;
@@ -270,7 +285,7 @@ namespace CreateJson
 			}
 			
 			string buildingJson = JsonConvert.SerializeObject(mainClass, Formatting.Indented);
-			System.IO.File.WriteAllText("E:\\buildingA.json", buildingJson);
+			System.IO.File.WriteAllText("E:\\buildingZ.json", buildingJson);
 		}
 	}
 }

@@ -1,11 +1,12 @@
 # Ignore Visual Studio temporary files, build results, and
 # User-specific files
-# *.gitignore
+.gitignore
 *.rsuser
 *.suo
 *.user
 *.userosscache
 *.userprefs
+Khagesh2/
 
 # Mono auto generated files
 mono_crash.*
